@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WizzExe | Payment</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap');
+
+body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #050505; overflow-x: hidden; }
+
+.mesh-gradient { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1;
+background: radial-gradient(circle at 0% 0%, #1e1b4b 0%, transparent 50%), radial-gradient(circle at 100% 100%, #312e81 0%, transparent 50%), radial-gradient(circle at 50% 50%, #020617 0%, #050505 100%);
+animation: pulse 10s ease infinite alternate;}
+
+@keyframes pulse {0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
+
+.glass-card { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border:1px solid rgba(255,255,255,0.08); box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);}
+
+.glow-cyan:hover { box-shadow:0 0 20px rgba(34,211,238,0.3); border-color: rgba(34,211,238,0.5);}
+
+.qr-container::after { content:''; position:absolute; top:-2px; left:-2px; right:-2px; bottom:-2px; background: linear-gradient(45deg,#06b6d4,#8b5cf6,#06b6d4); z-index:-1; border-radius:1.5rem; animation: rotate 3s linear infinite; opacity:0.3;}
+
+@keyframes rotate { from { filter: hue-rotate(0deg);} to { filter: hue-rotate(360deg);}}
+
+.btn-primary { background: linear-gradient(135deg,#06b6d4 0%,#3b82f6 100%); transition: all 0.3s ease; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow:0 10px 20px -5px rgba(6,182,212,0.5);}
+
+.toast { @apply fixed top-6 right-6 px-4 py-2 rounded-xl text-sm font-bold text-white opacity-0 pointer-events-none transition-all duration-500 z-50; }
+.toast-success { background-color: #06b6d4; }
+.toast-error { background-color: #ef4444; }
+.toast-show { opacity:1; pointer-events-auto; transform: translateY(0); }
+.toast-hide { opacity:0; transform: translateY(-10px); }
+</style>
+</head>
+<body class="text-slate-200">
+
+<div class="mesh-gradient"></div>
+
+<div class="max-w-md mx-auto px-6 py-10 relative pb-20">
+
+    <!-- Logo & Header -->
+    <div class="flex flex-col items-center mb-12 transform transition duration-700 hover:scale-105">
+        <div class="relative group">
+            <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full blur opacity-40 group-hover:opacity-100 transition duration-1000"></div>
+            <img src="logo.jpg" alt="Logo" class="relative w-24 h-24 rounded-full border-2 border-slate-900 object-cover">
+        </div>
+        <h1 class="mt-6 text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Shadow Exe</h1>
+        <div class="mt-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">• Online</div>
+    </div>
+
+    <!-- QRIS Card -->
+    <!--<div class="glass-card rounded-[2.5rem] p-8 mb-8 relative overflow-hidden group">
+        <div class="absolute top-0 right-0 p-4 opacity-10">
+            <ion-icon name="shield-checkmark" class="text-6xl text-white"></ion-icon>
+        </div>
+        <h2 class="text-center font-bold text-lg mb-6 tracking-wide flex items-center justify-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+            PEMBAYARAN QR
+        </h2>
+        <div class="qr-container relative bg-white p-4 rounded-3xl mb-6 transform transition duration-500 group-hover:scale-[1.02]">
+            <img id="mainQR" src="qr.jpg" alt="WizzExe" class="w-full rounded-xl">
+        </div>
+      
+        <div class="flex gap-3">
+            <button onclick="openPreview()" class="flex-1 flex items-center justify-center gap-2 bg-slate-800/50 hover:bg-slate-700/50 py-4 rounded-2xl border border-white/5 transition-all font-semibold">
+                <ion-icon name="scan-outline"></ion-icon> Perbesar
+            </button>
+            <button onclick="downloadQR()" class="flex-1 flex items-center justify-center gap-2 btn-primary py-4 rounded-2xl font-bold shadow-lg">
+                <ion-icon name="cloud-download-outline"></ion-icon> Simpan
+            </button>
+        </div>
+    </div> -->
+
+    <!-- E-Wallet Card -->
+    <div class="glass-card p-4 rounded-3xl flex items-center justify-between glow-cyan transition-all mb-8">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-[#1e88e5] rounded-2xl flex items-center justify-center shadow-inner">
+                <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhFGUE707IY8kQVOwZL99RIFJISIL2YbPOWiHuiFhx2dTNRArgrYhsxmvffkr06UuMmW_bH_jvz5Fwmu_2ulgwM3LZDNrk5ffAMdh2Idupas0uEpaasSyzx1vqelkojB0xM8e-3nsGVLdRGZniVPwjOlnwGY1g8pPl7SY6gLq0lMDft2Wv8X9RiVspg=s16000" class="w-10 h-10 object-contain brightness-100" alt="Dana">
+            </div>
+            <div>
+                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">E-Wallet DANA</p>
+                <p class="text-lg font-bold tracking-wider">088801046335</p>
+            </div>
+        </div>
+        <button onclick="copyToClipboard('085726006654', 'DANA')" class="w-10 h-10 flex items-center justify-center bg-white/5 rounded-xl hover:bg-cyan-500 transition-colors group">
+            <ion-icon name="copy-outline" class="text-xl group-active:scale-75 transition-transform"></ion-icon>
+        </button>
+    </div>
+
+    <!-- Instruksi pembayaran -->
+    <div class="glass-card p-6 rounded-[2rem] mb-12 border-l-4 border-cyan-500 bg-gradient-to-r from-cyan-500/5 to-transparent">
+        <h3 class="flex items-center gap-2 font-black text-xs uppercase tracking-[0.2em] mb-4 text-cyan-400">
+            <ion-icon name="list-outline" class="text-lg"></ion-icon> Instruksi Pembayaran
+        </h3>
+        <div class="space-y-4">
+            <div class="flex gap-4 items-start">
+                <div class="bg-cyan-500/20 text-cyan-400 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold">1</div>
+                <p class="text-sm text-slate-400 leading-relaxed">download QRIS atau salin nomor payment yang tersedia.</p>
+            </div>
+            <div class="flex gap-4 items-start">
+                <div class="bg-cyan-500/20 text-cyan-400 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold">2</div>
+                <p class="text-sm text-slate-400 leading-relaxed">buka aplikasi pembayaran Anda dan selesaikan transaksi.</p>
+            </div>
+            <div class="flex gap-4 items-start">
+                <div class="bg-cyan-500/20 text-cyan-400 w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold">3</div>
+                <p class="text-sm text-slate-400 leading-relaxed">wajib kirim bukti transfer ke @shadowLagiTidur untuk proses.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Telegram & Footer -->
+    <div class="flex flex-col items-center gap-8">
+        <div class="w-full flex justify-center mt-4">
+            <div class="flex flex-col items-center mt-6">
+                <a href="https://t.me/ItsWizzOffc"
+                    class="w-14 h-14 glass-card rounded-2xl flex items-center justify-center text-2xl hover:bg-green-500/20 hover:text-green-400 hover:-translate-y-2 transition-all duration-300">
+                    <ion-icon name="paper-plane-outline"></ion-icon>
+                </a>
+                <p class="text-[10px] font-bold tracking-[0.3em] text-slate-600 uppercase mt-6">Trusted Merchant</p>
+                <div class="h-[1px] w-12 bg-slate-800 my-4"></div>
+                <p class="text-[10px] text-slate-500 font-medium tracking-wider text-center">© 2026 <span>Shadow Exe OFC</span>. PAYMENT SECURE</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Preview modal -->
+<div id="previewModal" class="fixed inset-0 bg-[#050505]/fb z-50 hidden flex items-center justify-center p-6 backdrop-blur-xl" onclick="closePreview()">
+    <div class="relative max-w-sm w-full animate-zoom-in">
+        <div class="absolute -top-12 right-0 text-white text-3xl">
+            <ion-icon name="close-circle-outline" class="cursor-pointer"></ion-icon>
+        </div>
+        <img id="modalImg" src="" class="w-full h-auto rounded-[2rem] shadow-[0_0_50px_rgba(0,0,0,0.8)] border border-white/10">
+        <p class="text-center mt-6 text-slate-400 font-medium tracking-widest text-xs uppercase">Ketuk di mana saja untuk kembali</p>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast"></div>
+
+<script>
+// Fungsi copy universal, siap di encode
+function copyToClipboard(number, provider) {
+    try {
+        const text = number;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text)
+            .then(() => showToast(`Berhasil! Nomor ${provider} telah disalin.`, 'success'))
+            .catch(() => showToast(`Gagal menyalin nomor ${provider}.`, 'error'));
+        } else {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast(`Berhasil! Nomor ${provider} telah disalin.`, 'success');
+        }
+    } catch(e) {
+        console.error(e);
+        showToast(`Gagal menyalin nomor ${provider}.`, 'error');
+    }
+}
+
+function showToast(msg, type='success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.className = `toast ${type==='success'?'toast-success':'toast-error'} toast-show`;
+    setTimeout(() => toast.className = 'toast opacity-0 pointer-events-none transition-all duration-500', 2000);
+}
+
+function openPreview() {
+    const qrSrc = document.getElementById('mainQR').src;
+    document.getElementById('modalImg').src = qrSrc;
+    document.getElementById('previewModal').classList.remove('hidden');
+    document.getElementById('previewModal').classList.add('flex');
+}
+
+function closePreview() {
+    document.getElementById('previewModal').classList.add('hidden');
+    document.getElementById('previewModal').classList.remove('flex');
+}
+
+function downloadQR() {
+    const link = document.createElement('a');
+    link.href = document.getElementById('mainQR').src;
+    link.download = 'QRIS-WizzOffc.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+</script>
+
+<div style="ザカミトワハバ- @ItsWizzOffc;">
+   
+</div>
+
+<audio id="bgm" preload="auto">
+  <source src="wizz.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const audio = document.getElementById("bgm");
+let started = false;
+
+function startAudio() {
+    if (started) return;
+    started = true;
+
+    audio.play().catch(()=>{});
+
+    audio.onended = () => {
+        setTimeout(() => {
+            audio.currentTime = 0;
+            audio.play();
+        }, 2000);
+    };
+}
+
+// trigger pertama user (aman, ga ganggu UI)
+document.addEventListener("click", startAudio, { once: true });
+</script> 
+</body>
+                  </html>
