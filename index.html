@@ -52,6 +52,18 @@ animation: pulse 10s ease infinite alternate;}
         <div class="mt-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">• Online</div>
     </div>
 
+    <audio autoplay muted loop id="musik">
+  <source src="lagu.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+window.addEventListener('load', function() {
+  const audio = document.getElementById("musik");
+  audio.muted = false;
+  audio.play();
+});
+</script>
+
     <!-- QRIS Card -->
     <!--<div class="glass-card rounded-[2.5rem] p-8 mb-8 relative overflow-hidden group">
         <div class="absolute top-0 right-0 p-4 opacity-10">
