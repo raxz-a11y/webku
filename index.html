@@ -201,7 +201,7 @@ function closePreview() {
 function downloadQR() {
     const link = document.createElement('a');
     link.href = document.getElementById('mainQR').src;
-    link.download = 'QRIS-WizzOffc.png';
+    link.download = 'QRIS-Shadow.png';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -209,34 +209,9 @@ function downloadQR() {
 
 </script>
 
-<div style="ザカミトワハバ- @ItsWizzOffc;">
+<div style="ザカミトワハバ- @shadowLagiTidur;">
    
 </div>
-
-<audio id="bgm" preload="auto">
-  <source src="wizz.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-const audio = document.getElementById("bgm");
-let started = false;
-
-function startAudio() {
-    if (started) return;
-    started = true;
-
-    audio.play().catch(()=>{});
-
-    audio.onended = () => {
-        setTimeout(() => {
-            audio.currentTime = 0;
-            audio.play();
-        }, 2000);
-    };
-}
-
-// trigger pertama user (aman, ga ganggu UI)
-document.addEventListener("click", startAudio, { once: true });
-</script> 
+ 
 </body>
                   </html>
